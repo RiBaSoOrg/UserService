@@ -12,11 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
@@ -56,4 +54,5 @@ public class User {
         @AttributeOverride(name = "city", column = @Column(name = "shipping_city"))
     })
     private ShippingAddress shippingAddress;
+    
 }
