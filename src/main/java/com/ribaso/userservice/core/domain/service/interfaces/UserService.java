@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.ribaso.userservice.core.domain.model.BillingAddress;
 import com.ribaso.userservice.core.domain.model.ShippingAddress;
 import com.ribaso.userservice.core.domain.model.User;
-import com.ribaso.userservice.core.domain.service.exceptions.InvalidEmailException;
 import com.ribaso.userservice.core.domain.service.exceptions.UnknownUserException;
 import com.ribaso.userservice.core.domain.service.exceptions.UserAlreadyExistingException;
 
@@ -26,23 +25,17 @@ public interface UserService {
 
     /**
      * Add/Register a new user.
-     * @param userID unique UUID for new user.
-     * @param mail email address of the user.
-     * @return true if user successfully added, false otherwise.
+     * @param user can not be registered before.
      * @throws UserAlreadyExistingException
-     * @throws InvalidEmailException
      */
-    public boolean addUser(
-            @NonNull UUID userID,
-            @NonNull String mail) throws UserAlreadyExistingException, InvalidEmailException;
+    public void addUser(@NonNull User user) throws UserAlreadyExistingException;
 
     /**
      * Remove an existing user.
      * @param userID unique UUID of user to be removed.
-     * @return true if user successfully removed, false otherwise.
      * @throws UnknownUserException
      */
-    public boolean removeUser(@NonNull UUID userID) throws UnknownUserException;
+    public void removeUser(@NonNull UUID userID) throws UnknownUserException;
 
     /**
      * Update the billing address data.
@@ -72,7 +65,6 @@ public interface UserService {
      * @param userID unique UUID to identify user.
      * @param name a valid name.
      * @param lastname a valid name.
-     * @param mail email address of person.
      * @return true if personal data successfully updated, false otherwise.
      * @throws UnknownUserException
      * @throws IllegalArgumentException when the names had illegal characters.
@@ -80,7 +72,6 @@ public interface UserService {
     public boolean updatePersonData(
             @NonNull UUID userID,
             String name,
-            String lastname,
-            String mail) throws UnknownUserException, IllegalArgumentException, InvalidEmailException;
+            String lastname) throws UnknownUserException, IllegalArgumentException;
 
 }
