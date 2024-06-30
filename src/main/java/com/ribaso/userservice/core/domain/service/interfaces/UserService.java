@@ -1,5 +1,7 @@
 package com.ribaso.userservice.core.domain.service.interfaces;
 
+import java.util.UUID;
+
 import com.ribaso.userservice.core.domain.model.BillingAddress;
 import com.ribaso.userservice.core.domain.model.ShippingAddress;
 import com.ribaso.userservice.core.domain.model.User;
@@ -12,7 +14,7 @@ import lombok.NonNull;
 /**
  * This services contains and manages user data, except login credentials.
  */
-public interface IUserService {
+public interface UserService {
 
     /**
      * Get the user.
@@ -20,7 +22,7 @@ public interface IUserService {
      * @return user object containing user data.
      * @throws UnknownUserException
      */
-    public User getUser(@NonNull String userID) throws UnknownUserException;
+    public User getUser(@NonNull UUID userID) throws UnknownUserException;
 
     /**
      * Add/Register a new user.
@@ -31,7 +33,7 @@ public interface IUserService {
      * @throws InvalidEmailException
      */
     public boolean addUser(
-            @NonNull String userID,
+            @NonNull UUID userID,
             @NonNull String mail) throws UserAlreadyExistingException, InvalidEmailException;
 
     /**
@@ -40,7 +42,7 @@ public interface IUserService {
      * @return true if user successfully removed, false otherwise.
      * @throws UnknownUserException
      */
-    public boolean removeUser(@NonNull String userID) throws UnknownUserException;
+    public boolean removeUser(@NonNull UUID userID) throws UnknownUserException;
 
     /**
      * Update the billing address data.
@@ -50,7 +52,7 @@ public interface IUserService {
      * @throws UnknownUserException
      */
     public boolean updateBillingAddress(
-            @NonNull String userID,
+            @NonNull UUID userID,
             @NonNull BillingAddress billingAddress) throws UnknownUserException;
 
     /**
@@ -61,7 +63,7 @@ public interface IUserService {
      * @throws UnknownUserException
      */
     public boolean updateShippingAddress(
-            @NonNull String userID, 
+            @NonNull UUID userID, 
             @NonNull ShippingAddress shippingAddress) throws UnknownUserException;
 
     /**
@@ -76,7 +78,7 @@ public interface IUserService {
      * @throws IllegalArgumentException when the names had illegal characters.
      */
     public boolean updatePersonData(
-            @NonNull String userID,
+            @NonNull UUID userID,
             String name,
             String lastname,
             String mail) throws UnknownUserException, IllegalArgumentException, InvalidEmailException;
