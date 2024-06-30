@@ -1,8 +1,10 @@
 package com.ribaso.userservice.core.domain.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Optional;
@@ -21,6 +23,7 @@ import com.ribaso.userservice.core.domain.model.BillingAddress;
 import com.ribaso.userservice.core.domain.model.ShippingAddress;
 import com.ribaso.userservice.core.domain.model.User;
 import com.ribaso.userservice.core.domain.service.exceptions.UnknownUserException;
+import com.ribaso.userservice.core.domain.service.exceptions.UserAlreadyExistingException;
 import com.ribaso.userservice.core.domain.service.impl.UserServiceImpl;
 import com.ribaso.userservice.core.domain.service.interfaces.UserService;
 import com.ribaso.userservice.core.domain.service.interfaces.UserRepository;
@@ -53,13 +56,18 @@ public class UserServiceIntegrationTests {
             this.aliceUUID,
             "Alice",
             "Astar",
-            "alice@gmail.com",
             new BillingAddress(),
             new ShippingAddress()
         );
 
         Mockito.when(userRepository.findById(aliceUUID)).thenReturn(Optional.of(alice));
     }
+
+    //#region getUser
+
+    ///////////////////////////////////////////////////////////
+    ////    GET USER    ///////////////////////////////////////
+    ///////////////////////////////////////////////////////////
 
     @Test
     public void getUser_validUUID_returnsCorrectUser() throws UnknownUserException {
@@ -78,4 +86,27 @@ public class UserServiceIntegrationTests {
         assertNotEquals(aliceUUID, invalidUUID);
         assertThrows(UnknownUserException.class, () -> userService.getUser(invalidUUID));
     }
+
+    //#endregion
+
+    //#region addUser
+
+    ///////////////////////////////////////////////////////////
+    ////    ADD USER    ///////////////////////////////////////
+    ///////////////////////////////////////////////////////////
+
+    @Test
+    public void addUser_userUnregistered_throwsNoException() throws UserAlreadyExistingException {
+        User bob = new User();
+        Mockito.when(userRepository.findById(bob.getId())).thenReturn(Optional.empty());
+
+        assertDoesNotThrow(() -> userService.addUser(bob));
+    }
+
+    @Test
+    public void addUser_userAlreadyRegistered_throwsUserAlreadyExistingException() {
+        assertThrows(UserAlreadyExistingException.class, () -> userService.addUser(alice));
+    }
+
+    //#endregion
 }

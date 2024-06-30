@@ -13,9 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -28,8 +30,6 @@ public class User {
     private String firstname;
 
     private String lastname;
-
-    private String email;
 
     @Embedded
     @AttributeOverrides({
@@ -54,5 +54,4 @@ public class User {
         @AttributeOverride(name = "city", column = @Column(name = "shipping_city"))
     })
     private ShippingAddress shippingAddress;
-    
 }

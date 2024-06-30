@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ribaso.userservice.core.domain.model.BillingAddress;
 import com.ribaso.userservice.core.domain.model.ShippingAddress;
 import com.ribaso.userservice.core.domain.model.User;
-import com.ribaso.userservice.core.domain.service.exceptions.InvalidEmailException;
 import com.ribaso.userservice.core.domain.service.exceptions.UnknownUserException;
 import com.ribaso.userservice.core.domain.service.exceptions.UserAlreadyExistingException;
 import com.ribaso.userservice.core.domain.service.interfaces.UserRepository;
@@ -33,14 +32,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean addUser(@NonNull UUID userID, @NonNull String mail)
-            throws UserAlreadyExistingException, InvalidEmailException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addUser'");
+    public void addUser(@NonNull User user) throws UserAlreadyExistingException {
+        Optional<User> userOpt = userRepository.findById(user.getId());
+        if (userOpt.isPresent()) {
+            throw new UserAlreadyExistingException();
+        }
+        userRepository.save(user);
     }
 
     @Override
-    public boolean removeUser(@NonNull UUID userID) throws UnknownUserException {
+    public void removeUser(@NonNull UUID userID) throws UnknownUserException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'removeUser'");
     }
@@ -60,8 +61,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePersonData(@NonNull UUID userID, String name, String lastname, String mail)
-            throws UnknownUserException, IllegalArgumentException, InvalidEmailException {
+    public boolean updatePersonData(@NonNull UUID userID, String name, String lastname)
+            throws UnknownUserException, IllegalArgumentException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updatePersonData'");
     }
