@@ -1,6 +1,9 @@
 package com.ribaso.userservice.core.domain.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -64,5 +67,15 @@ public class UserServiceIntegrationTests {
         User actual = userService.getUser(aliceUUID);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getUser_invalidUUID_throwsUnkownUserException() {
+        Mockito.when(userRepository.findById(any())).thenReturn(Optional.empty());
+
+        UUID invalidUUID = UUID.randomUUID();
+
+        assertNotEquals(aliceUUID, invalidUUID);
+        assertThrows(UnknownUserException.class, () -> userService.getUser(invalidUUID));
     }
 }
