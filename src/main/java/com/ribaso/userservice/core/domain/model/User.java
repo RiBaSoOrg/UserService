@@ -7,23 +7,19 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "USER_ID")
     private UUID id;
 
@@ -54,4 +50,8 @@ public class User {
         @AttributeOverride(name = "city", column = @Column(name = "shipping_city"))
     })
     private ShippingAddress shippingAddress;
+
+    public User(@NonNull UUID id) {
+        this.id = id;
+    }
 }

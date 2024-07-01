@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 import java.util.Optional;
@@ -97,7 +96,7 @@ public class UserServiceIntegrationTests {
 
     @Test
     public void addUser_userUnregistered_throwsNoException() throws UserAlreadyExistingException {
-        User bob = new User();
+        User bob = new User(UUID.randomUUID());
         Mockito.when(userRepository.findById(bob.getId())).thenReturn(Optional.empty());
 
         assertDoesNotThrow(() -> userService.addUser(bob));
@@ -109,4 +108,5 @@ public class UserServiceIntegrationTests {
     }
 
     //#endregion
+
 }
