@@ -63,8 +63,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateShippingAddress(@NonNull UUID userID, @NonNull ShippingAddress shippingAddress)
             throws UnknownUserException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateShippingAddress'");
+
+        User user = getUser(userID);
+        user.setShippingAddress(shippingAddress);
+
+        userRepository.save(user);
     }
 
     @Override

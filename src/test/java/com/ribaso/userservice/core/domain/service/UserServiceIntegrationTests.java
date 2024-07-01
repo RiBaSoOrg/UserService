@@ -159,4 +159,32 @@ public class UserServiceIntegrationTests {
     }
 
     //#endregion
+
+    //#region updateShippingAddress
+
+    ///////////////////////////////////////////////////////////
+    ////    Update Shipping Address    /////////////////////////
+    ///////////////////////////////////////////////////////////
+
+    @Test
+    public void updateShippingAddress_userRegistered_addressUpdated() throws UnknownUserException {
+        ShippingAddress address = new ShippingAddress();
+        String firstname = "Alice_Test";
+        address.setFirstname(firstname);
+
+        userService.updateShippingAddress(aliceUUID, address);
+
+        Mockito.verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void updateShippingAddress_userUnregistered_throwsUnknownUserException() {
+        UUID invalidUser = UUID.randomUUID();
+        ShippingAddress address = new ShippingAddress();
+        address.setFirstname("Bob");
+
+        assertThrows(UnknownUserException.class, () -> userService.updateShippingAddress(invalidUser, address));
+    }
+
+    //#endregion
 }
