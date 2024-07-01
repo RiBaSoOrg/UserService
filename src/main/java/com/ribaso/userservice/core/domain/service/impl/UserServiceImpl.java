@@ -42,8 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeUser(@NonNull UUID userID) throws UnknownUserException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeUser'");
+        Optional<User> userOpt = userRepository.findById(userID);
+        if (!userOpt.isPresent()) {
+            throw new UnknownUserException();
+        }
+        
+        userRepository.deleteById(userID);
     }
 
     @Override

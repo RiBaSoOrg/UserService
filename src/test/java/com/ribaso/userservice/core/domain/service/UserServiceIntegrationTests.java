@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -95,18 +96,39 @@ public class UserServiceIntegrationTests {
     ///////////////////////////////////////////////////////////
 
     @Test
-    public void addUser_userUnregistered_throwsNoException() throws UserAlreadyExistingException {
+    public void addUser_userUnregistered_userAdded() throws UserAlreadyExistingException {
         User bob = new User(UUID.randomUUID());
         Mockito.when(userRepository.findById(bob.getId())).thenReturn(Optional.empty());
 
         assertDoesNotThrow(() -> userService.addUser(bob));
+        Mockito.verify(userRepository, times(1)).save(bob);
     }
 
     @Test
-    public void addUser_userAlreadyRegistered_throwsUserAlreadyExistingException() {
+    public void addUser_userRegistered_throwsUserAlreadyExistingException() {
         assertThrows(UserAlreadyExistingException.class, () -> userService.addUser(alice));
     }
 
     //#endregion
 
+    //#region removeUser
+
+    ///////////////////////////////////////////////////////////
+    ////    REMOVE USER    ////////////////////////////////////
+    ///////////////////////////////////////////////////////////
+
+    @Test
+    public void removeUser_userRegistered_userRemoved() {
+        assertDoesNotThrow(() -> userService.removeUser(aliceUUID));
+        Mockito.verify(userRepository, times(1)).deleteById(aliceUUID);
+    }
+
+    @Test
+    public void removeUser_userUnregistered_throwsUnknownUserException() {
+        User bob = new User(UUID.randomUUID());
+
+        assertThrows(UnknownUserException.class, () -> userService.removeUser(bob.getId()));
+    }
+
+    //#endregion
 }
