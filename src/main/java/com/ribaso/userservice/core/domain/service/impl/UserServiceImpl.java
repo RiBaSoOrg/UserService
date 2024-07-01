@@ -71,10 +71,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updatePersonData(@NonNull UUID userID, String name, String lastname)
+    public void updatePersonData(@NonNull UUID userID, String firstname, String lastname)
             throws UnknownUserException, IllegalArgumentException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updatePersonData'");
+
+        User user = getUser(userID);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+
+        userRepository.save(user);
     }
 
 }

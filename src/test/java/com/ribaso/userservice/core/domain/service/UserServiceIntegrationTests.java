@@ -135,7 +135,7 @@ public class UserServiceIntegrationTests {
     //#region updateBillingAddress
 
     ///////////////////////////////////////////////////////////
-    ////    Update Billing Address    /////////////////////////
+    ////    UPDATE BILLING ADDRESS    /////////////////////////
     ///////////////////////////////////////////////////////////
 
     @Test
@@ -163,7 +163,7 @@ public class UserServiceIntegrationTests {
     //#region updateShippingAddress
 
     ///////////////////////////////////////////////////////////
-    ////    Update Shipping Address    /////////////////////////
+    ////    UPDATE SHIPPING ADDRESS    ////////////////////////
     ///////////////////////////////////////////////////////////
 
     @Test
@@ -184,6 +184,33 @@ public class UserServiceIntegrationTests {
         address.setFirstname("Bob");
 
         assertThrows(UnknownUserException.class, () -> userService.updateShippingAddress(invalidUser, address));
+    }
+
+    //#endregion
+
+    //#region updatePersonData
+
+    ///////////////////////////////////////////////////////////
+    ////    UPDATE PERSON DATA    /////////////////////////////
+    ///////////////////////////////////////////////////////////
+
+    @Test
+    public void updatePersonData_userRegistered_addressUpdated() throws UnknownUserException {
+        String firstname = "Alice_Test";
+        String lastname = "AStar_Test";
+
+        userService.updatePersonData(aliceUUID, firstname, lastname);
+
+        Mockito.verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    public void updatePersonData_userUnregistered_throwsUnknownUserException() {
+        UUID invalidUser = UUID.randomUUID();
+        String firstname = "Bob_Test";
+        String lastname = "Bibar_Test";
+
+        assertThrows(UnknownUserException.class, () -> userService.updatePersonData(invalidUser, firstname, lastname));
     }
 
     //#endregion

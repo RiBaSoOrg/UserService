@@ -61,14 +61,14 @@ public interface UserService {
      * Update the personal information of a user.
      * Arguments with null value will not be updated.
      * @param userID unique UUID to identify user.
-     * @param name a valid name.
-     * @param lastname a valid name.
+     * @param firstname a valid firstname.
+     * @param lastname a valid lastname.
      * @throws UnknownUserException
      * @throws IllegalArgumentException when the names had illegal characters.
      */
     public void updatePersonData(
             @NonNull UUID userID,
-            String name,
+            String firstname,
             String lastname) throws UnknownUserException, IllegalArgumentException;
 
 }
