@@ -51,21 +51,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateBillingAddress(@NonNull UUID userID, @NonNull BillingAddress billingAddress)
+    public void updateBillingAddress(@NonNull UUID userID, @NonNull BillingAddress billingAddress)
             throws UnknownUserException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateBillingAddress'");
+
+        User user = getUser(userID);
+        user.setBillingAddress(billingAddress);
+
+        userRepository.save(user);
     }
 
     @Override
-    public boolean updateShippingAddress(@NonNull UUID userID, @NonNull ShippingAddress shippingAddress)
+    public void updateShippingAddress(@NonNull UUID userID, @NonNull ShippingAddress shippingAddress)
             throws UnknownUserException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateShippingAddress'");
     }
 
     @Override
-    public boolean updatePersonData(@NonNull UUID userID, String name, String lastname)
+    public void updatePersonData(@NonNull UUID userID, String name, String lastname)
             throws UnknownUserException, IllegalArgumentException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updatePersonData'");

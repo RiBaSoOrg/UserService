@@ -41,10 +41,9 @@ public interface UserService {
      * Update the billing address data.
      * @param userID unique UUID to identify user.
      * @param billingAddress data object containing the data to update.
-     * @return true if billing address successfully updated, false otherwise.
      * @throws UnknownUserException
      */
-    public boolean updateBillingAddress(
+    public void updateBillingAddress(
             @NonNull UUID userID,
             @NonNull BillingAddress billingAddress) throws UnknownUserException;
 
@@ -52,10 +51,9 @@ public interface UserService {
      * Update the shipping address data.
      * @param userID unique UUID to identify user.
      * @param shippingAddress data object containing the data to update.
-     * @return true if shipping address successfully updated, false otherwise.
      * @throws UnknownUserException
      */
-    public boolean updateShippingAddress(
+    public void updateShippingAddress(
             @NonNull UUID userID, 
             @NonNull ShippingAddress shippingAddress) throws UnknownUserException;
 
@@ -65,11 +63,10 @@ public interface UserService {
      * @param userID unique UUID to identify user.
      * @param name a valid name.
      * @param lastname a valid name.
-     * @return true if personal data successfully updated, false otherwise.
      * @throws UnknownUserException
      * @throws IllegalArgumentException when the names had illegal characters.
      */
-    public boolean updatePersonData(
+    public void updatePersonData(
             @NonNull UUID userID,
             String name,
             String lastname) throws UnknownUserException, IllegalArgumentException;
