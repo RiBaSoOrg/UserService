@@ -22,7 +22,7 @@ jobs:
       run: mvn -f pom.xml clean package
 
     - name: Build Docker image
-      run: docker build -f Dockerfile -t ribaso/userservice:latest 
+      run: docker build -f Dockerfile -t ribaso/userservice:latest UserService/
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
