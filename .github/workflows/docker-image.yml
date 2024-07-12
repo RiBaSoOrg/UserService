@@ -3,36 +3,10 @@ name: Build and Deploy to Docker Hub
 on:
   push:
     branches:
-      - main
       - RicoBastelBranch
 
 jobs:
-  build-main:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
-
-      - name: Build with Maven
-        run: mvn -f pom.xml clean package
-
-      - name: Build Docker image
-        run: docker build -f Dockerfile -t ribaso/userservice:latest .
-
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-      - name: Push Docker image to Docker Hub
-        run: docker push ribaso/userservice:latest
-
   build-rico:
-    if: github.ref == 'refs/heads/RicoBastelBranch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
