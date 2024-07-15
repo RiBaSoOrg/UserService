@@ -1,9 +1,15 @@
 package com.ribaso.userservice.port.user.controller;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,10 +36,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{userID}")
-    public User getUser(@PathVariable UUID userID) throws UnknownUserException {
-        User user = userService.getUser(userID);
-        return user;
+    @GetMapping()
+    public User getUser(Authentication authentication) throws UnknownUserException {
+        if (authentication != null && authentication.getPrincipal() instanceof DefaultOidcUser) {
+            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+            String userID = oidcUser.getClaim("sub");
+            UUID uuid = UUID.fromString(userID);
+            User user = userService.getUser(uuid);
+            return user;
+        } 
+
+        return null;
     }
 
     @PostMapping
@@ -70,5 +83,4 @@ public class UserController {
                 
         userService.updatePersonData(userID, firstname, lastname);
     }
-
 }
