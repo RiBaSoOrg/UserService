@@ -28,7 +28,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers(HttpMethod.DELETE, "/user/**")
                     .hasRole("admin")
-                .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**")
+                .requestMatchers("/unauthenticated", "/oauth2/**")
                     .permitAll()
                 .anyRequest()
                     .hasAnyRole("user", "admin")

@@ -31,6 +31,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/login")
+    public void login() {
+        return;
+    }
+
     @GetMapping
     public User getUser(Authentication authentication) throws UnknownUserException {
         UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
