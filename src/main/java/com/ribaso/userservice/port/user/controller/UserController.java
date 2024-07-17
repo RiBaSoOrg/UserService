@@ -28,6 +28,7 @@ import com.ribaso.userservice.core.domain.model.User;
 import com.ribaso.userservice.core.domain.service.exceptions.UnknownUserException;
 import com.ribaso.userservice.core.domain.service.exceptions.UserAlreadyExistingException;
 import com.ribaso.userservice.core.domain.service.interfaces.UserService;
+import com.ribaso.userservice.port.helpers.UUIDExtractor;
 
 @RestController
 @RequestMapping("/user")
@@ -36,21 +37,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping()
+    @GetMapping
     public User getUser(Authentication authentication) throws UnknownUserException {
-        if (authentication != null && authentication.getPrincipal() instanceof DefaultOidcUser) {
-            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-            String userID = oidcUser.getClaim("sub");
-            UUID uuid = UUID.fromString(userID);
-            User user = userService.getUser(uuid);
-            return user;
-        } 
-
-        return null;
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
+        User user = userService.getUser(uuid);
+        return user;
     }
 
     @PostMapping
-    public @ResponseBody void addUser(@RequestBody User user) throws UserAlreadyExistingException {
+    public @ResponseBody void addUser(Authentication authentication, @RequestBody User user) throws UserAlreadyExistingException {
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
+        user.setId(uuid);
         userService.addUser(user);
     }
 
@@ -59,28 +56,37 @@ public class UserController {
         userService.removeUser(userID);
     }
 
-    @PutMapping("/{userID}/billingData")
+    @DeleteMapping
+    public @ResponseBody void removeUser(Authentication authentication) throws UnknownUserException {
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
+        userService.removeUser(uuid);
+    }
+
+    @PutMapping("/billingData")
     public @ResponseBody void updateBillingAddress(
-            @PathVariable UUID userID,
+            Authentication authentication,
             @RequestBody BillingAddress address) throws UnknownUserException {
 
-        userService.updateBillingAddress(userID, address);
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
+        userService.updateBillingAddress(uuid, address);
     }
 
-    @PutMapping("/{userID}/shippingData")
+    @PutMapping("/shippingData")
     public @ResponseBody void updateShippingAddress(
-            @PathVariable UUID userID,
+            Authentication authentication,
             @RequestBody ShippingAddress address) throws UnknownUserException {
-        
-                userService.updateShippingAddress(userID, address);
+                
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);
+        userService.updateShippingAddress(uuid, address);
     }
 
-    @PutMapping("/{userID}/userData")
+    @PutMapping("/userData")
     public @ResponseBody void updateUserData(
-            @PathVariable UUID userID,
+            Authentication authentication,
             @RequestParam String firstname,
             @RequestParam String lastname) throws UnknownUserException {
-                
-        userService.updatePersonData(userID, firstname, lastname);
+        
+        UUID uuid = UUIDExtractor.extractFromAuthentication(authentication);   
+        userService.updatePersonData(uuid, firstname, lastname);
     }
 }

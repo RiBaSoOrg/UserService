@@ -9,7 +9,7 @@ ARG JAR_FILE=target/userservice-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 # Exponiere den Port, auf dem die Anwendung läuft
-EXPOSE 8080
+EXPOSE 8081
 
 # Starte die Anwendung
 ENTRYPOINT ["java", "-jar", "/app.jar"]

@@ -2,6 +2,7 @@ package com.ribaso.userservice.port.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,7 +18,7 @@ public class SecurityConfig {
         http.oauth2Login(oauth2Login -> oauth2Login
                 .tokenEndpoint(Customizer.withDefaults())
                 .userInfoEndpoint(Customizer.withDefaults())
-                .defaultSuccessUrl("http://localhost:8081/user")
+                .defaultSuccessUrl("http://userservice:8081/user")
             )
 
             .sessionManagement(session -> session
@@ -25,38 +26,18 @@ public class SecurityConfig {
             )
 
             .authorizeHttpRequests(request -> request
+                .requestMatchers(HttpMethod.DELETE, "/user/**")
+                    .hasAuthority("admin")
                 .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**")
                     .permitAll()
                 .anyRequest()
-                    .fullyAuthenticated()
+                    .hasAnyAuthority("user", "admin")
             )
 
             .logout(logout -> logout
-                .logoutSuccessUrl("http://localhost:8080/realms/ribaso/protocol/openid-connect/logout?redirect_uri=http://localhost:8081/")
+                .logoutSuccessUrl("http://keycloak:8080/realms/ribaso/protocol/openid-connect/logout?redirect_uri=http://userservice:8081/")
             );
         
-        
-        //http
-        //        .oauth2Client()
-        //            .and()
-        //        .oauth2Login()
-        //        .tokenEndpoint()
-        //            .and()
-        //        .userInfoEndpoint();
-//
-        //http
-        //        .sessionManagement()
-        //        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-//
-        //http
-        //        .authorizeHttpRequests()
-        //                    .requestMatchers("/unauthenticated", "/oauth2/**", "/login/**").permitAll()
-        //                    .anyRequest()
-        //                        .fullyAuthenticated()
-        //        .and()
-        //            .logout()
-        //            .logoutSuccessUrl("http://localhost:8080/realms/ribaso/protocol/openid-connect/logout?redirect_uri=http://localhost:8081/");
-
         return http.build();
     }
 }
