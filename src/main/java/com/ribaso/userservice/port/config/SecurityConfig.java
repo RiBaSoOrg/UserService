@@ -22,6 +22,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import ch.qos.logback.core.pattern.Converter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -40,7 +42,9 @@ public class SecurityConfig {
             )
 
             .oauth2ResourceServer((oauth2) -> oauth2
-                .jwt(Customizer.withDefaults())
+                .jwt(conf -> conf
+                    .jwtAuthenticationConverter(new CustomJwtAuthenticationConverter())
+                )
             )
 
             .sessionManagement(session -> session
@@ -80,8 +84,7 @@ public class SecurityConfig {
                     var roles = (Collection<String>) realmAccess.get(ROLES_CLAIM);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 } else if (userInfo.hasClaim(GROUPS)) {
-                    Collection<String> roles = (Collection<String>) userInfo.getClaim(
-                        GROUPS);
+                    Collection<String> roles = (Collection<String>) userInfo.getClaim(GROUPS);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
             } else {
@@ -89,8 +92,7 @@ public class SecurityConfig {
                 Map<String, Object> userAttributes = oauth2UserAuthority.getAttributes();
 
                 if (userAttributes.containsKey(REALM_ACCESS_CLAIM)) {
-                    Map<String, Object> realmAccess = (Map<String, Object>) userAttributes.get(
-                        REALM_ACCESS_CLAIM);
+                    Map<String, Object> realmAccess = (Map<String, Object>) userAttributes.get(REALM_ACCESS_CLAIM);
                     Collection<String> roles = (Collection<String>) realmAccess.get(ROLES_CLAIM);
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
