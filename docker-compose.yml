@@ -9,16 +9,11 @@ services:
       POSTGRES_PASSWORD: yourpassword
     ports:
       - "5432:5432"
-    networks:
-      - keycloak-network
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.1
     container_name: keycloak
     environment:
-      KC_HOSTNAME: keycloak
-      KC_HOSTNAME_PORT: 8080
-      KC_HOSTNAME_STRICT_BACKCHANNEL: "true"
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "false"
@@ -28,8 +23,6 @@ services:
       - "8080:8080"
     volumes:
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
-    networks:
-      - keycloak-network
 
   userservice:
     build:
@@ -49,9 +42,3 @@ services:
     ports:
       - "8081:8081"
     restart: unless-stopped
-    networks:
-      - keycloak-network
-
-networks:
-  keycloak-network:
-    driver: bridge
