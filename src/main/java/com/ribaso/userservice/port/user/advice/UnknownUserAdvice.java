@@ -13,7 +13,7 @@ public class UnknownUserAdvice {
 
     @ResponseBody
     @ExceptionHandler(value = UnknownUserException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     String unknownUserHandler(UnknownUserException ex) {
         return ex.getMessage();
     }
