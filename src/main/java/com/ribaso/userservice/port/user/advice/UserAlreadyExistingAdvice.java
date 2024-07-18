@@ -13,7 +13,7 @@ public class UserAlreadyExistingAdvice {
     
     @ResponseBody
     @ExceptionHandler(value = UserAlreadyExistingException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     String unknownUserHandler(UserAlreadyExistingException ex) {
         return ex.getMessage();
     }
