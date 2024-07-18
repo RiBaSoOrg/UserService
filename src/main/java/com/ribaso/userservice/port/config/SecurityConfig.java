@@ -57,7 +57,7 @@ public class SecurityConfig {
             )
 
             .logout(logout -> logout
-                .logoutSuccessUrl("http://keycloak:8080/realms/ribaso/protocol/openid-connect/logout?redirect_uri=http://userservice:8081/")
+                .logoutSuccessUrl("http://keycloak:8080/realms/ribaso/protocol/openid-connect/logout?redirect_uri=http://frontend:3000/login")
             );
 
         return http.build();
