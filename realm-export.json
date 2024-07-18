@@ -420,7 +420,8 @@
           "containerId": "da6a6146-c645-4f4f-902a-aa1ff6c6ea8f",
           "attributes": {}
         }
-      ]
+      ],
+      "frontend": []
     }
   },
   "groups": [],
@@ -678,6 +679,59 @@
       ]
     },
     {
+      "id": "7f73e180-a9b1-4bba-bb52-e2ec46bc938f",
+      "clientId": "frontend",
+      "name": "",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://frontend:3000/*"
+      ],
+      "webOrigins": [
+        "http://frontend:3000"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "display.on.consent.screen": "false",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "microprofile-jwt",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access"
+      ]
+    },
+    {
       "id": "94a08272-9ec9-4954-b8d5-9cfbc5ed7c3a",
       "clientId": "realm-management",
       "name": "${client_realm-management}",
@@ -789,7 +843,7 @@
       "clientId": "userservice",
       "name": "",
       "description": "",
-      "rootUrl": "http://userservice:8081",
+      "rootUrl": "",
       "adminUrl": "http://userservice:8081",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -798,7 +852,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://localhost:8081/*",
-        "/*"
+        "http://userservice:8083/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -815,7 +869,6 @@
         "oidc.ciba.grant.enabled": "false",
         "client.secret.creation.time": "1721210874",
         "backchannel.logout.session.required": "true",
-        "post.logout.redirect.uris": "+",
         "oauth2.device.authorization.grant.enabled": "false",
         "display.on.consent.screen": "false",
         "backchannel.logout.revoke.offline.tokens": "false"
@@ -828,14 +881,14 @@
         "acr",
         "roles",
         "profile",
+        "microprofile-jwt",
         "basic",
         "email"
       ],
       "optionalClientScopes": [
         "address",
         "phone",
-        "offline_access",
-        "microprofile-jwt"
+        "offline_access"
       ]
     }
   ],

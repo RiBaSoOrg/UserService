@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +31,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @GetMapping("/login")
-    public void login() {
-        return;
-    }
 
     @GetMapping
     public User getUser(Authentication authentication) throws UnknownUserException {

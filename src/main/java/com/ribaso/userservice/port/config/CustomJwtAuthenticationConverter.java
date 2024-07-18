@@ -29,6 +29,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
         // Extrahiere die Rollen aus dem Keycloak Token (z.B. aus realm_access.claims.roles)
         Map<String, Object> realmAccess = jwt.getClaim("realm_access");
         if (realmAccess != null && realmAccess.containsKey("roles")) {
+            @SuppressWarnings("unchecked")
             List<String> roles = (List<String>) realmAccess.get("roles");
             List<GrantedAuthority> roleAuthorities = roles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
